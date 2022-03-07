@@ -5,6 +5,8 @@ import EmailIcon from '@material-ui/icons/Email';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import  styled  from "styled-components";
+import { useSelector, useDispatch } from 'react-redux';
+import Action from '../../Redux/Action/Action';
 
 // Esilo
 const BoxForm = styled.form
@@ -36,18 +38,21 @@ function InputAdornments() {
   };
 
 
-  const [form, setForm] = useState({ email: '', password: '' })
+  
 
-  function changeForm(e) {
-    const { name, value } = e.target
+const dispatch = useDispatch()
 
-    setForm({ ...form, [name]: value })
-  }
-  function submitForm(e){
-    e.preventDefault()
-
-    console.log(form);
-  }
+function handleLogin({ email, password }){
+  dispatch(
+    Action.storageLogin({
+      email,
+      password,
+    }),
+  );
+}
+function handleLogout(){
+  dispatch(Action.logoutUser());
+}
 
 
   return (
@@ -61,10 +66,9 @@ function InputAdornments() {
         <InputLabel htmlFor="my-input">Email</InputLabel>
         <Input
           name="email"
-          value={form.email}
           id="email"
           aria-describedby="my-helper-text"
-          onChange={changeForm}
+          /* onChange={} */
           fullWidth
           endAdornment={
             <InputAdornment position="end">
@@ -84,7 +88,7 @@ function InputAdornments() {
           id="standard-adornment-password"
           type={values.showPassword ? 'text' : 'password'}
           value={values.password}
-          onChange={handleChange('password') || {changeForm}}
+          onChange={handleChange('password')}
           endAdornment={
             <InputAdornment position="end">
               <IconButton
@@ -99,7 +103,7 @@ function InputAdornments() {
         />
       </FormControl>
 
-      <Button variant="outlined" color="primary" onSubmit={form}>Entrar</Button>
+      <Button variant="outlined" color="primary" >Entrar</Button>
     </BoxForm>
   )
 }
